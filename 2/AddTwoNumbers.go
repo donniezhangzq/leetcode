@@ -9,32 +9,32 @@ type ListNode struct {
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 
-	var index int = 0
-	var sr []int = make([]int, 2)
+	var sr []int
+	var Add int = 0
 	for {
 		if l1 == nil && l2 == nil {
+			if Add != 0 {
+				sr = append(sr, Add)
+			}
 			break
 		} else if l1 == nil {
-			sr[index] += (*l2).Val
+			sr = append(sr, (*l2).Val)
 		} else if l2 == nil {
-			sr[index] += (*l1).Val
+			sr = append(sr, (*l1).Val)
 		} else {
-			if len(sr) < index+1 {
-				sr = append(sr, (*l1).Val+(*l2).Val+sr[index])
-			} else {
-				sr[index] += (*l1).Val + (*l2).Val
-			}
+			sr = append(sr, (*l1).Val+(*l2).Val)
 		}
 
-		if sr[index] >= 10 {
-			Add := sr[index] / 10
-			sr[index] = sr[index] % 10
-			sr = append(sr, Add)
-		}
-		index++
+		tAdd := (sr[len(sr)-1] + Add) / 10
+		sr[len(sr)-1] = (sr[len(sr)-1] + Add) % 10
+		Add = tAdd
 
-		l1 = (*l1).Next
-		l2 = (*l2).Next
+		if l1 != nil {
+			l1 = (*l1).Next
+		}
+		if l2 != nil {
+			l2 = (*l2).Next
+		}
 	}
 	var lr *ListNode
 	var lt *ListNode
@@ -50,8 +50,8 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 }
 
 func main() {
-	l1 := &ListNode{9, &ListNode{8, &ListNode{7, nil}}}
-	l2 := &ListNode{6, &ListNode{7, &ListNode{4, nil}}}
+	l1 := &ListNode{9, &ListNode{9, nil}}
+	l2 := &ListNode{1, nil}
 	lt := addTwoNumbers(l1, l2)
 	fmt.Println(lt)
 }
